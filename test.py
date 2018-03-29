@@ -1,4 +1,8 @@
 import subprocess
+import sys
+import copy
+
+
 largeTests = [
     ("50", "2"),
     ("100", "2"),
@@ -11,6 +15,8 @@ largeTests = [
 
 cnt = 0
 okcnt = 0
+
+
 def comp(list1, list2):
     if len(list1) != len(list2):
         return False
@@ -19,10 +25,14 @@ def comp(list1, list2):
             return False
     return True
 
+
 for i in range(1, 10):
     for j in range(1, 10):
-        out = subprocess.check_output(["./test.sh", str(i), str(j)]).decode('utf-8').split("\n")[:-1]
+        out = subprocess.check_output(["./test.sh",
+                                       str(i),
+                                       str(j)]).decode('utf-8').split("\n")[:-1]
         inp = list(map(int, out[0].split(" ")[:-1]))
+        org_inp = copy.deepcopy(inp)
         inp.sort()
         out = list(map(int, out[1:]))
         res = comp(inp, out)
@@ -31,12 +41,20 @@ for i in range(1, 10):
         if res:
             msg = "OK"
             okcnt += 1
+        else:
+            print("Testing {0} {1}".format(i, j))
+            print("-----Original Input-----")
+            print(org_inp)
+            print("-------Your Output------")
+            print(out)
+            sys.exit(1)
         print(str(i) + "\t" + str(j) + "\t" + msg)
 
 
 for (i, j) in largeTests:
     out = subprocess.check_output(["./test.sh", i, j]).decode('utf-8').split("\n")[:-1]
     inp = list(map(int, out[0].split(" ")[:-1]))
+    org_inp = copy.deepcopy(inp)
     inp.sort()
     out = list(map(int, out[1:]))
     res = comp(inp, out)
@@ -45,11 +63,19 @@ for (i, j) in largeTests:
     if res:
         msg = "OK"
         okcnt += 1
+    else:
+        print("Testing {0} {1}".format(i, j))
+        print("-----Original Input-----")
+        print(org_inp)
+        print("-------Your Output------")
+        print(out)
+        sys.exit(1)
     print(str(i) + "\t" + str(j) + "\t" + msg)
 
 for _ in range(50):
     out = subprocess.check_output(["./test.sh", "7", "6"]).decode('utf-8').split("\n")[:-1]
     inp = list(map(int, out[0].split(" ")[:-1]))
+    org_inp = copy.deepcopy(inp)
     inp.sort()
     out = list(map(int, out[1:]))
     res = comp(inp, out)
@@ -58,11 +84,19 @@ for _ in range(50):
     if res:
         msg = "OK"
         okcnt += 1
+    else:
+        print("Testing {0} {1}".format(i, j))
+        print("-----Original Input-----")
+        print(org_inp)
+        print("-------Your Output------")
+        print(out)
+        sys.exit(1)
     print("7" + "\t" + "6" + "\t" + msg)
 
 for _ in range(50):
     out = subprocess.check_output(["./test.sh", "6", "5"]).decode('utf-8').split("\n")[:-1]
     inp = list(map(int, out[0].split(" ")[:-1]))
+    org_inp = copy.deepcopy(inp)
     inp.sort()
     out = list(map(int, out[1:]))
     res = comp(inp, out)
@@ -71,11 +105,19 @@ for _ in range(50):
     if res:
         msg = "OK"
         okcnt += 1
+    else:
+        print("Testing {0} {1}".format(i, j))
+        print("-----Original Input-----")
+        print(org_inp)
+        print("-------Your Output------")
+        print(out)
+        sys.exit(1)
     print("6" + "\t" + "5" + "\t" + msg)
 
 for _ in range(50):
     out = subprocess.check_output(["./test.sh", "5", "4"]).decode('utf-8').split("\n")[:-1]
     inp = list(map(int, out[0].split(" ")[:-1]))
+    org_inp = copy.deepcopy(inp)
     inp.sort()
     out = list(map(int, out[1:]))
     res = comp(inp, out)
@@ -84,6 +126,13 @@ for _ in range(50):
     if res:
         msg = "OK"
         okcnt += 1
+    else:
+        print("Testing {0} {1}".format(i, j))
+        print("-----Original Input-----")
+        print(org_inp)
+        print("-------Your Output------")
+        print(out)
+        sys.exit(1)
     print("5" + "\t" + "4" + "\t" + msg)
 
 print("Score: " + str(okcnt) + "/" + str(cnt))
